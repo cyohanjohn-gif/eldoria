@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eldoria — An Endless AI Fantasy RPG</title>
+<style>
+:root{--bg:#0c0e12;--panel:#151922;--panel2:#1b202b;--line:#303746;--gold:#d5ad68;--gold2:#f1d49b;--text:#eee9df;--muted:#a5a9b3;--red:#a84c4c;--green:#7ca98a}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#1b202b 0%,var(--bg) 58%);color:var(--text);font:15px/1.55 Georgia,"Times New Roman",serif;min-height:100vh}
+button,input,textarea{font:inherit}button{cursor:pointer}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px clamp(16px,4vw,54px);border-bottom:1px solid #ffffff12;background:#0b0d11cc;position:sticky;top:0;z-index:5;backdrop-filter:blur(10px)}
+.brand{font-size:20px;letter-spacing:.16em;color:var(--gold2);font-weight:bold}.brand small{display:block;font:10px/1.5 Arial,sans-serif;color:var(--muted);letter-spacing:.2em}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}.small-btn{background:transparent;color:var(--muted);border:1px solid var(--line);padding:8px 11px;border-radius:8px;font:12px Arial,sans-serif}.small-btn:hover{border-color:var(--gold);color:var(--gold2)}
+.layout{max-width:1320px;margin:auto;padding:26px clamp(14px,3vw,38px) 54px;display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:22px}
+.hero{border:1px solid #8e75433b;border-radius:15px;overflow:hidden;min-height:255px;position:relative;background:linear-gradient(90deg,#11141bed 0%,#11141bbf 58%,#11141b30 100%),radial-gradient(ellipse at 78% 30%,#5b5a5a 0%,#2c303c 27%,#171b26 58%,#0c0e12 100%);display:flex;align-items:end}
+.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#0d1017 0%,transparent 75%),repeating-linear-gradient(120deg,transparent 0 80px,#ffffff04 81px 82px)}
+.hero-content{position:relative;padding:clamp(22px,4vw,40px);max-width:680px}.eyebrow{font:11px Arial,sans-serif;letter-spacing:.24em;color:var(--gold);text-transform:uppercase}.hero h1{font-size:clamp(32px,5vw,55px);line-height:1.04;margin:10px 0 12px;font-weight:normal}.hero p{max-width:600px;color:#d0d0d3;margin:0}
+.badge{display:inline-flex;gap:6px;align-items:center;border:1px solid #d5ad684c;color:var(--gold2);padding:5px 9px;border-radius:100px;font:10px Arial,sans-serif;letter-spacing:.08em;margin-top:18px}
+.story-card,.side-card{background:linear-gradient(145deg,#181d27,#12161d);border:1px solid var(--line);border-radius:13px}
+.story-card{margin-top:18px;padding:clamp(20px,3vw,30px)}.chapter{font:11px Arial,sans-serif;color:var(--gold);letter-spacing:.18em;text-transform:uppercase}.story-card h2{font-size:25px;font-weight:normal;margin:8px 0 18px}.story-text{font-size:17px;line-height:1.8;color:#dedbd5;white-space:pre-line}.story-text p{margin:0 0 14px}
+.scene-note{margin-top:20px;padding:12px 15px;border-left:2px solid var(--gold);background:#d5ad680d;color:#c4c2bf;font-style:italic}
+.choices-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:26px 0 12px}.choices-title h3{font-size:18px;font-weight:normal;margin:0}.choices-title span{font:10px Arial,sans-serif;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px}.choice{display:flex;gap:13px;text-align:left;padding:16px;background:#171c25;border:1px solid #333b49;border-radius:11px;color:var(--text);min-height:98px;transition:.15s}.choice:hover{border-color:var(--gold);background:#202632;transform:translateY(-1px)}.choice .num{font:12px Arial,sans-serif;color:var(--gold);border:1px solid #8e75436b;border-radius:7px;min-width:28px;height:28px;display:grid;place-items:center}.choice strong{display:block;font-size:15px;font-weight:normal;color:#f3e7d1;margin-bottom:5px}.choice small{display:block;font:12px/1.5 Arial,sans-serif;color:var(--muted)}
+.custom-box{margin-top:10px;border:1px solid #8e75435c;background:#191a1e;border-radius:11px;padding:15px}.custom-label{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px;color:var(--gold2)}.custom-label small{font:10px Arial,sans-serif;color:var(--muted);align-self:center}.custom-row{display:flex;gap:8px}.custom-row input{min-width:0;flex:1;background:#0e1117;border:1px solid var(--line);border-radius:8px;padding:12px;color:var(--text);outline:none}.custom-row input:focus{border-color:var(--gold)}.gold-btn{border:0;border-radius:8px;padding:11px 16px;background:linear-gradient(135deg,#e5c483,#b98d4c);color:#19150f;font-weight:bold}.gold-btn:hover{filter:brightness(1.08)}.gold-btn:disabled{opacity:.5;cursor:not-allowed}
+.sidebar{display:flex;flex-direction:column;gap:14px}.side-card{padding:18px}.side-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.side-head h3{margin:0;font-size:17px;font-weight:normal}.side-head span{font:10px Arial,sans-serif;color:var(--muted);letter-spacing:.1em}.portrait{height:105px;border-radius:9px;background:radial-gradient(ellipse at 50% 30%,#60564a,#252b36 45%,#101319 85%);display:grid;place-items:center;font-size:43px;margin-bottom:14px;border:1px solid #ffffff12}.char-name{font-size:22px;color:var(--gold2)}.char-meta{font:11px Arial,sans-serif;color:var(--muted);margin-top:2px}.level-row{display:flex;justify-content:space-between;margin:15px 0 6px;font:11px Arial,sans-serif;color:var(--muted)}.bar{height:6px;background:#303541;border-radius:10px;overflow:hidden;margin-bottom:11px}.bar span{display:block;height:100%;border-radius:10px}.hp{background:var(--red);width:88%}.mp{background:#5c83bf;width:65%}.xp{background:var(--gold);width:24%}.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:14px}.stat{padding:9px 4px;text-align:center;background:#0f131a;border:1px solid #ffffff0c;border-radius:8px}.stat strong{display:block;font-size:19px;color:#eee1c8;font-weight:normal}.stat small{font:9px Arial,sans-serif;letter-spacing:.08em;color:var(--muted)}.list{display:flex;flex-direction:column;gap:10px}.list-item{display:flex;gap:10px;align-items:center;font-size:13px;color:#d7d5d1}.list-item span:first-child{font-size:18px;width:24px;text-align:center}.list-item small{display:block;font:10px Arial,sans-serif;color:var(--muted)}.quest{padding:10px 0;border-bottom:1px solid #ffffff0c}.quest:last-child{border-bottom:0;padding-bottom:0}.quest b{font-size:13px;font-weight:normal}.quest p{margin:3px 0 0;font:11px/1.5 Arial,sans-serif;color:var(--muted)}.quest-dot{color:var(--gold);margin-right:7px}.statusline{display:flex;align-items:center;gap:7px;color:var(--muted);font:11px Arial,sans-serif;margin-top:15px}.dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#252b36;border:1px solid var(--line);border-radius:9px;padding:10px 15px;box-shadow:0 8px 35px #0008;font:12px Arial,sans-serif;display:none;z-index:10}.footer{max-width:1320px;margin:-30px auto 0;padding:0 38px 24px;text-align:center;font:10px Arial,sans-serif;letter-spacing:.1em;color:#727782}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{display:grid;grid-template-columns:1fr 1fr}.hero{min-height:230px}.footer{padding-left:14px;padding-right:14px}}
+@media(max-width:560px){.sidebar{grid-template-columns:1fr}.choices{grid-template-columns:1fr}.choice{min-height:80px}.topbar{padding:12px 14px}.brand{font-size:16px}.hero h1{font-size:36px}.story-text{font-size:16px}.custom-row{flex-direction:column}.custom-row .gold-btn{width:100%}.top-actions .small-btn{padding:7px 8px}.footer{margin-top:0}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">✦ ELDORIA <small>AN ENDLESS FANTASY RPG</small></div>
+  <div class="top-actions">
+    <button class="small-btn" id="saveBtn">Save game</button>
+    <button class="small-btn" id="newBtn">New adventure</button>
+  </div>
+</header>
+<main class="layout">
+<section>
+  <div class="hero">
+    <div class="hero-content">
+      <div class="eyebrow">The Third Age · Year 847</div>
+      <h1>Your legend<br>begins here.</h1>
+      <p>A living fantasy world of forgotten kingdoms, dangerous beasts, forbidden magic, and choices that shape your destiny.</p>
+      <div class="badge">✧ AI-DRIVEN ADVENTURE <span>·</span> NO FINAL CHAPTER</div>
+    </div>
+  </div>
+  <article class="story-card">
+    <div class="chapter" id="chapter">CHAPTER I · THE STRANGER AT DAWN</div>
+    <h2 id="sceneTitle">A Pendant in the Rain</h2>
+    <div class="story-text" id="storyText">
+      <p>Rain lashes the ancient road as you awaken in the mud outside Ashbourne. Your head throbs. You remember neither the journey nor the wounded knight kneeling beside you.</p>
+      <p>He presses a silver pendant into your palm. Strange runes shimmer beneath its surface, answering a pulse you feel deep in your chest.</p>
+      <p>“The creatures are returning,” he whispers. “Trust no crown. Find the old watchtower before moonrise.” From the forest comes a roar that shakes water from the trees. Between the trunks, two amber eyes open.</p>
+    </div>
+    <div class="scene-note" id="sceneNote">The forest creature has noticed you. You have seconds to act.</div>
+    <div class="choices-title"><h3>What do you do?</h3><span>Choose your path · 4 options</span></div>
+    <div class="choices" id="choices">
+      <button class="choice" data-choice="0"><span class="num">01</span><span><strong>Draw the knight's sword</strong><small>Stand your ground and prepare to fight the creature.</small></span></button>
+      <button class="choice" data-choice="1"><span class="num">02</span><span><strong>Run toward Ashbourne</strong><small>Seek shelter among the villagers before the beast attacks.</small></span></button>
+      <button class="choice" data-choice="2"><span class="num">03</span><span><strong>Study the glowing pendant</strong><small>Reach for the strange magic awakening inside it.</small></span></button>
+      <button class="choice" data-choice="3"><span class="num">✧</span><span><strong>Custom action</strong><small>Try anything you can imagine. The world will respond.</small></span></button>
+    </div>
+    <div class="custom-box" id="customBox">
+      <div class="custom-label"><span>✧ Write your own action</span><small>OPTION 04 · YOUR CHOICE</small></div>
+      <div class="custom-row"><input id="customInput" maxlength="500" placeholder="e.g. I try to calm the beast and speak to it…" aria-label="Write your own action"><button class="gold-btn" id="customBtn">Take action ↗</button></div>
+    </div>
+    <div class="statusline"><span class="dot"></span><span id="saveStatus">Demo adventure · progress saves in this browser</span></div>
+  </article>
+</section>
+<aside class="sidebar">
+  <section class="side-card">
+    <div class="side-head"><h3>Character</h3><span>HERO PROFILE</span></div>
+    <div class="portrait">⚔</div>
+    <div class="char-name" id="charName">Yohan</div>
+    <div class="char-meta" id="charClass">The Forgotten Wanderer · Spellsword</div>
+    <div class="level-row"><span>HEALTH</span><span id="hpLabel">88 / 100</span></div><div class="bar"><span class="hp" id="hpBar"></span></div>
+    <div class="level-row"><span>MANA</span><span id="mpLabel">65 / 100</span></div><div class="bar"><span class="mp" id="mpBar"></span></div>
+    <div class="level-row"><span>EXPERIENCE</span><span id="xpLabel">120 / 500 XP</span></div><div class="bar"><span class="xp" id="xpBar"></span></div>
+    <div class="stat-grid"><div class="stat"><strong id="str">8</strong><small>STRENGTH</small></div><div class="stat"><strong id="dex">7</strong><small>DEXTERITY</small></div><div class="stat"><strong id="int">9</strong><small>INTELLECT</small></div></div>
+    <div class="statusline"><span class="dot"></span><span id="levelText">Level 1 · Adventurer difficulty</span></div>
+  </section>
+  <section class="side-card">
+    <div class="side-head"><h3>Inventory</h3><span id="goldLabel">12 GOLD</span></div>
+    <div class="list" id="inventory">
+      <div class="list-item"><span>🗡</span><span>Worn iron dagger<small>Weapon · Common</small></span></div>
+      <div class="list-item"><span>🧥</span><span>Roadworn cloak<small>Armor · Common</small></span></div>
+      <div class="list-item"><span>✧</span><span>Strange silver pendant<small>Quest item · Unknown</small></span></div>
+      <div class="list-item"><span>🧪</span><span>Minor healing potion ×1<small>Consumable</small></span></div>
+    </div>
+  </section>
+  <section class="side-card">
+    <div class="side-head"><h3>Active quests</h3><span id="questCount">01 ACTIVE</span></div>
+    <div id="quests"><div class="quest"><b><span class="quest-dot">◆</span>The Old Watchtower</b><p>Find the watchtower before moonrise. The wounded knight's warning may be your only lead.</p></div></div>
+  </section>
+</aside>
+</main>
+<div class="footer">YOUR CHOICES CHANGE THE WORLD · YOUR STORY DOES NOT HAVE A FINAL CHAPTER</div>
+<div class="toast" id="toast"></div>
+<script>
+const initialState = () => ({
+ name:"Yohan",origin:"The Forgotten Wanderer",cls:"Spellsword",difficulty:"Adventurer",level:1,hp:88,maxHp:100,mp:65,maxMp:100,xp:120,nextXp:500,str:8,dex:7,int:9,gold:12,turn:0,
+ title:"A Pendant in the Rain",chapter:"CHAPTER I · THE STRANGER AT DAWN",
+ story:[
+ "Rain lashes the ancient road as you awaken in the mud outside Ashbourne. Your head throbs. You remember neither the journey nor the wounded knight kneeling beside you.",
+ "He presses a silver pendant into your palm. Strange runes shimmer beneath its surface, answering a pulse you feel deep in your chest.",
+ "“The creatures are returning,” he whispers. “Trust no crown. Find the old watchtower before moonrise.” From the forest comes a roar that shakes water from the trees. Between the trunks, two amber eyes open."
+ ],note:"The forest creature has noticed you. You have seconds to act.",
+ choices:[
+  ["Draw the knight's sword","Stand your ground and prepare to fight the creature."],
+  ["Run toward Ashbourne","Seek shelter among the villagers before the beast attacks."],
+  ["Study the glowing pendant","Reach for the strange magic awakening inside it."],
+  ["Custom action","Try anything you can imagine. The world will respond."]
+ ],
+ inventory:[["🗡","Worn iron dagger","Weapon · Common"],["🧥","Roadworn cloak","Armor · Common"],["✧","Strange silver pendant","Quest item · Unknown"],["🧪","Minor healing potion ×1","Consumable"]],
+ quests:[["The Old Watchtower","Find the watchtower before moonrise. The wounded knight's warning may be your only lead."]]
+});
+let state=initialState();
+const $=id=>document.getElementById(id);
+function toast(msg){const t=$("toast");t.textContent=msg;t.style.display="block";setTimeout(()=>t.style.display="none",2500)}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function render(){
+ $("charName").textContent=state.name;$("charClass").textContent=state.origin+" · "+state.cls;
+ $("hpLabel").textContent=state.hp+" / "+state.maxHp;$("hpBar").style.width=(state.hp/state.maxHp*100)+"%";
+ $("mpLabel").textContent=state.mp+" / "+state.maxMp;$("mpBar").style.width=(state.mp/state.maxMp*100)+"%";
+ $("xpLabel").textContent=state.xp+" / "+state.nextXp+" XP";$("xpBar").style.width=Math.min(100,state.xp/state.nextXp*100)+"%";
+ $("str").textContent=state.str;$("dex").textContent=state.dex;$("int").textContent=state.int;
+ $("levelText").textContent="Level "+state.level+" · "+state.difficulty+" difficulty";$("goldLabel").textContent=state.gold+" GOLD";
+ $("chapter").textContent=state.chapter;$("sceneTitle").textContent=state.title;
+ $("storyText").innerHTML=state.story.map(p=>"<p>"+escapeHtml(p)+"</p>").join("");
+ $("sceneNote").textContent=state.note;
+ $("choices").innerHTML=state.choices.slice(0,3).map((c,i)=>`<button class="choice" data-choice="${i}"><span class="num">0${i+1}</span><span><strong>${escapeHtml(c[0])}</strong><small>${escapeHtml(c[1])}</small></span></button>`).join("")+
+ `<button class="choice" data-choice="3"><span class="num">✧</span><span><strong>Custom action</strong><small>Try anything you can imagine. The world will respond.</small></span></button>`;
+ $("inventory").innerHTML=state.inventory.map(i=>`<div class="list-item"><span>${escapeHtml(i[0])}</span><span>${escapeHtml(i[1])}<small>${escapeHtml(i[2])}</small></span></div>`).join("");
+ $("quests").innerHTML=state.quests.map(q=>`<div class="quest"><b><span class="quest-dot">◆</span>${escapeHtml(q[0])}</b><p>${escapeHtml(q[1])}</p></div>`).join("");
+ $("questCount").textContent=String(state.quests.length).padStart(2,"0")+" ACTIVE";
+ document.querySelectorAll("[data-choice]").forEach(b=>b.addEventListener("click",()=>{let i=+b.dataset.choice;if(i===3){$("customInput").focus();$("customBox").scrollIntoView({behavior:"smooth",block:"center"})}else choose(i)}));
+}
+function demoContinue(action){
+ const outcomes=[
+  {title:"Teeth in the Rain",story:["You seize the knight's fallen blade just as the creature bursts from the undergrowth. It is a direwolf, but its fur is threaded with black crystal and sickly blue fire glows in its mouth.","You turn aside its first lunge. Steel bites into its shoulder; the beast recoils with a howl that sounds almost human. For one heartbeat, the pendant burns hot enough to hurt.","The creature retreats into the trees, leaving a trail of dark blood. Beyond the road, a lantern flickers in the upper window of the old watchtower."],note:"The direwolf has withdrawn, but something is controlling it. A new trail leads toward the watchtower.",choices:[["Follow the dark blood trail","Track the wounded direwolf into the forest."],["Head for the watchtower","Reach the lantern before its signal goes dark."],["Search the knight's belongings","Look for clues about the pendant and the creature."]],hp:-8,xp:45},
+  {title:"The Gates of Ashbourne",story:["You sprint toward Ashbourne as the creature crashes through the brush behind you. The village gate is half-shut; a broad-shouldered guard levels a spear at your chest.","“No one enters after the bell,” she warns. Her eyes flick to the pendant. Her expression changes. “Where did you get that?”","Before you can answer, something strikes the outside of the gate hard enough to splinter the wood. The guard swears and motions you inside."],note:"The guard recognizes the pendant. She may be an ally—or know more than she is saying.",choices:[["Tell the guard about the knight","Earn her trust with the truth."],["Demand to see the village elder","Find someone who can identify the pendant."],["Help defend the gate","Prove yourself against the approaching threat."]],xp:35},
+  {title:"The Pendant Answers",story:["You raise the pendant. Its runes unfold into rings of pale light, turning rain into glittering threads suspended in the air.","A voice speaks from somewhere behind your thoughts: “Bearer found. The first seal is broken.” A pulse of power rushes through your hands, and the creature freezes at the edge of the trees.","The light fades. You know, without understanding how, that the beast is afraid of you. Far away, a bell answers from a ruined tower."],note:"You have awakened a dormant magical gift. The pendant may be a key to something ancient.",choices:[["Try to summon the magic again","Test the limits of your new power."],["Approach the creature carefully","See whether the beast can be reached without violence."],["Follow the distant bell","Investigate the source of the answering signal."]],mp:-12,xp:55}
+ ];
+ let out=outcomes[action]||outcomes[0];
+ state.turn++;state.title=out.title;state.chapter="CHAPTER I · ASHES AND OMENS";state.story=out.story;state.note=out.note;state.choices=out.choices.map(c=>c.slice());
+ state.hp=Math.max(1,Math.min(state.maxHp,state.hp+(out.hp||0)));state.mp=Math.max(0,Math.min(state.maxMp,state.mp+(out.mp||0)));state.xp+=out.xp||25;
+ if(state.xp>=state.nextXp){state.level++;state.xp-=state.nextXp;state.nextXp=Math.round(state.nextXp*1.45);state.maxHp+=8;state.hp=state.maxHp;state.maxMp+=5;state.mp=state.maxMp;state.str++;state.int++;toast("Level up! You are now level "+state.level+".")}
+ if(state.turn===1){state.quests.push(["The Black Crystal","Discover why a direwolf has been corrupted by black crystal."])}
+ render();persist(false);$("saveStatus").textContent="Demo mode · turn "+state.turn+" · progress saved locally";
+}
+async function choose(i){const action=state.choices[i][0];await takeAction(action,i)}
+async function takeAction(action,index){
+ const api=localStorage.getItem("eldoriaApiEndpoint");
+ if(api){
+  $("saveStatus").textContent="The world is responding…";
+  document.querySelectorAll("[data-choice],#customBtn").forEach(b=>b.disabled=true);
+  try{
+   const res=await fetch(api,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({state,action,choiceIndex:index})});
+   if(!res.ok)throw new Error("API request failed");
+   const next=await res.json();
+   if(!next.title||!Array.isArray(next.story)||!Array.isArray(next.choices)||next.choices.length!==3)throw new Error("The server response needs a title, story array, and exactly three generated choices.");
+   state={...state,...next,turn:state.turn+1};render();persist(false);$("saveStatus").textContent="AI adventure · turn "+state.turn+" · progress saved locally";
+  }catch(e){toast("AI connection error: "+e.message);$("saveStatus").textContent="AI endpoint unavailable · demo mode is still playable";}
+  finally{document.querySelectorAll("[data-choice],#customBtn").forEach(b=>b.disabled=false)}
+ }else{
+  demoContinue(index===undefined?Math.floor(Math.random()*3):index);
+  if(index===undefined){state.story.unshift("Your action: “"+action+"”");render()}
+  toast("Demo mode: connect an AI backend to generate unique outcomes.");
+ }
+}
+$("customBtn").addEventListener("click",()=>{const v=$("customInput").value.trim();if(!v){$("customInput").focus();return} $("customInput").value="";takeAction(v,undefined)});
+$("customInput").addEventListener("keydown",e=>{if(e.key==="Enter")$("customBtn").click()});
+function persist(show=true){localStorage.setItem("eldoriaSave",JSON.stringify(state));if(show)toast("Game saved in this browser.")}
+$("saveBtn").addEventListener("click",()=>{persist(true);$("saveStatus").textContent="Saved locally · turn "+state.turn});
+$("newBtn").addEventListener("click",()=>{if(confirm("Start a new adventure? This replaces your current browser save.")){state=initialState();localStorage.removeItem("eldoriaSave");render();$("saveStatus").textContent="New demo adventure";toast("A new adventure begins.")}});
+try{const saved=localStorage.getItem("eldoriaSave");if(saved){const parsed=JSON.parse(saved);if(parsed&&parsed.story&&parsed.choices)state=parsed}}catch(e){}
+render();
+</script>
+</body>
+</html>
